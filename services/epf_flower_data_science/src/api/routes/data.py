@@ -189,3 +189,17 @@ def make_predictions(input_data: List[PredictionInput]):
             status_code=500,
             detail=f"Failed to make predictions: {str(e)}"
         )
+        
+from src.services.firestore import create_firestore_collection
+
+@router.post("/firestore/init", name="Initialize Firestore Collection")
+def init_firestore_collection():
+    """Create the Firestore collection 'parameters'."""
+    try:
+        create_firestore_collection()
+        return {"message": "Firestore collection 'parameters' initialized successfully."}
+    except Exception as e:
+        raise HTTPException(
+            status_code=500,
+            detail=f"Failed to initialize Firestore collection: {str(e)}"
+        )

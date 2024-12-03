@@ -1,4 +1,5 @@
 import uvicorn
+import os 
 
 from src.app import get_application
 

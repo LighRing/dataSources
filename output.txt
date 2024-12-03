@@ -1,0 +1,717 @@
+Architecture du projet :
+
+├─── README.md
+├─── config
+│   ├─── dev
+│   ├─── local
+│   ├─── prd
+│   └─── uat
+└─── services
+    └─── epf_flower_data_science
+        ├─── iac
+        │   └─── README.md
+        ├─── main.py
+        ├─── requirements.txt
+        ├─── src
+        │   ├─── .env
+        │   ├─── app.py
+        │   ├─── config
+        │   │   └─── model_parameters.json
+        │   ├─── data
+        │   │   ├─── Iris.csv
+        │   │   └─── database.sqlite
+        │   ├─── models
+        │   │   └─── LogisticRegression.joblib
+        │   ├─── schemas
+        │   │   ├─── camelcase.py
+        │   │   ├─── message.py
+        │   │   └─── prediction.py
+        │   └─── services
+        │       ├─── cleaning.py
+        │       ├─── data.py
+        │       ├─── env.py
+        │       ├─── firestore.py
+        │       ├─── parameters.py
+        │       └─── utils.py
+        └─── tests
+            └─── unit
+
+
+Contenu des fichiers :
+
+fichier README.md: 
+# EPF-API-TP
+
+- **Question 1:** _Which Python library/framework is often used to create fast, simple REST APIs?_
+
+  - Django
+
+  - Flask
+
+  - FastAPI
+
+  - All of the above
+
+- **Question 2:** _What's the main difference between Django, Flask and FastAPI in terms of performance and speed?_
+
+  - Django is generally faster than Flask and FastAPI.
+
+  - Flask outperforms Django and FastAPI.
+
+  - FastAPI is renowned for its increased speed and performance compared with Django and Flask.
+
+  - Django, Flask and FastAPI have equivalent performance.
+
+- **Question 3:** What is an endpoint in the context of REST APIs?\*
+
+  - A unique IP address associated with an API.
+
+  - A breakpoint in the code where the API can be interrupted.
+
+  - A specific URL to which a request can be sent to interact with the API.
+
+  - A unique identifier assigned to each incoming request.
+
+- **Question 4:** _What are the main HTTP verbs used to define REST API methods?_
+
+  - GET, POST, PUT, PATCH, DELETE
+
+  - SEND, RECEIVE, UPDATE, REMOVE
+
+  - READ, WRITE, MODIFY, DELETE
+
+  - FETCH, INSERT, UPDATE, DELETE
+
+- **Question 5:** _In the context of REST APIs, what does the term "middleware" mean?_
+
+  - A component that processes data sent by the user.
+
+  - An external library used to speed up API development.
+
+  - Intermediate software that processes the request before it reaches the main application.
+
+  - A method for securing data stored in the database.
+
+- **Question 6:** _Which Python library is often used to serialize and deserialize JSON data in the context of REST APIs?_
+
+  - JSONify
+
+  - PyJSON
+
+  - json.dumps() and json.loads()
+
+  - serializeJSON
+
+- **Question 7:** _What is the main use of the HTTP "PUT" method in the context of REST APIs?_
+
+  - Create a new resource.
+
+  - Update an existing resource, or create one if it doesn't exist.
+
+  - Delete a resource.
+
+  - Read a specific resource.
+
+- **Question 8:** In FastAPI, how do you define an endpoint to handle a POST request with JSON data?\*
+
+  - @app.post("/endpoint")
+
+  - @app.get("/endpoint")
+
+  - @app.request("/endpoint")
+
+  - @app.update("/endpoint")
+
+# Creating an API with FastAPI
+
+### Introduction
+
+In this exercise you are going to encapsulate data processing and machine learning model execution logic to make predictions on a well-known dataset: iris kaggle dataset
+
+### Few elements to remember about the REST Protocol
+
+REST (Representational State Transfer) is an architectural style for designing networked applications. RESTful APIs (Application Programming Interfaces) conform to the principles of REST, allowing systems to communicate over HTTP in a stateless manner; Some important aspects are:
+
+- **Resources:** Everything is a resource, identified by a unique URI.
+
+- **HTTP Methods:** CRUD operations are performed using standard HTTP methods (GET, POST, PUT, DELETE).
+
+- **Stateless:** Each request from a client contains all the information needed to understand and fulfill the request.
+
+### Key Concepts in FastAPI:
+
+- **Endpoint:**
+
+- **Basic HTTP Methods:**
+
+- **Request and Response:**
+
+### Evaluation requirements
+
+The evaluation criteria will be as follows:
+
+- Proper functioning of endpoints
+- Clear documentation of code, use of explicit names and compliance with REST naming conventions. Please follow pep-8 convention for documenting your functions (exemple at the end of the README)
+- Static swagger generation through an API route
+- Completion of unit tests
+
+### Objective
+
+Before starting the exercise, fork the following git repo if not already done in TP1: https://github.com/klem-data/API---Webscrapping \
+Don't forget to add me to the repo with the following email address: clement.letizia1@epfedu.fr
+
+About the API workflow:
+- The router.py file contains references to the routers defined in the routers folder.
+- The routers file contains the declaration of all API routes by tags 
+- The Services folder must contain the functions that are called in the route declaration
+
+- **Step 1: Installing libraries:** Install the libraries in the requirements.txt
+
+- **Step 2: First launch:**  Execute the main.py file in the root folder and access it.
+
+- **Step 3: Redirect root API:**  Redirect the root endpoint of your API to the automatic swagger documentation
+
+- **Step 4: Access the swagger documentation:**  Access to the swagger built automatically by FastAPI
+
+- **Step 5: First call to the API:**  Make an API request on the hello route using the swagger directly or a tool like insomnia or postman
+
+- **Step 6: Access the dataset:**  Create a route in api/routes/data to download and save the contents of the following kaggle dataset in the src/data folder: https://www.kaggle.com/datasets/uciml/iris. 
+
+- **Step 7: Loading the Iris Flower dataset:** Add an endpoint to load the iris dataset file as a dataframe and return it as a json.
+
+- **Step 8: Processing the dataset:** Add an endpoint to be able to perform the necessary processing on the data before being able to train a model with it.
+
+- **Step 9: Split in train and test:** Add an endpoint to split the iris dataset as train and test and send back a json with both
+
+- **Step 10: Parameters init:** Go to scikit learn and select any classification model to be used on the iris dataset (performance is of no interest to us in this course). Look at the parameters you need to use for this model and store them in the file src/config/model_parameters.json
+
+- **Step 11: Training the classification model:** Add an endpoint to train a classification model with the processed dataset as input and saved this model in the folder src/models.
+
+- **Step 12: Prediction with Trained Model:** Add endpoint to make predictions with trained model and parameters. This endpoint have to send back the predictions as json.
+
+- **Step 13: Create the Firestore collection:** Create the firestore collection "parameters" with the following parameters: "n_estimators", "criterion". The name of the document with the parameters have to be : parameters.
+
+- **Step 14: Retrieve parameters from Firestore:** Add an endpoint to retrieve parameters from Firestore.
+
+- **Step 15: Update and add Firestore parameters:** Add endpoints to update or add parameters in Firestore.
+
+- **Step 16: Authentication:** Implement authentication through Firestore authentication
+
+- **Step 17: User management:** Extend authentication to include user registration, login and logout endpoints. Explore also user roles and permissions. Allow only admin users to access to the list of user 
+
+- **Step 18: Protection against Denial of Service (DoS) attacks:** Implement rate limiting by user
+
+- **Step 19: API versioning:** Add the information about the version of your API. (you are on version 1.0) Also add the prefix to your routes to indicate the version.
+
+- **Step 20: Error Handling:** Add a custom error responses for error 404 and provide meaningful error message.
+
+- **Step 21: API testing:** Implement unit tests for your functions and enpoints
+
+- **Step 22: CI/CD pipeline:** Define a CI/CD pipeline on github using github Actions to launch your tests after every push
+
+The completion of this TP is relatively long and may overtake TP3 
+
+### Documentation link :
+
+- FastApi: https://fastapi.tiangolo.com/
+
+- Google Cloud Firestore: https://cloud.google.com/python/docs/reference/firestore/latest/index.html
+
+- Scikit-Learn: https://scikit-learn.org/stable/index.html
+
+- Pandas: https://pandas.pydata.org/docs/
+
+
+### Pep-8 docstring example :
+
+"""
+  Retrieve content of a json file
+
+  Args:
+      path (str): The path of the file
+
+  Returns:
+      JSON object: The json object with the parameters
+  """
+
+
+fichier config\dev: 
+
+
+fichier config\local: 
+
+
+fichier config\prd: 
+
+
+fichier config\uat: 
+
+
+fichier services\epf_flower_data_science\main.py: 
+import uvicorn
+import os 
+
+from src.app import get_application
+
+app = get_application()
+
+if __name__ == "__main__":
+    uvicorn.run("main:app", reload=True, port=8080)
+
+from src.services.env import load_environment
+
+# Charger l'environnement
+load_environment()
+
+# Vérifier le chemin de la clé
+key_path = os.getenv("GOOGLE_APPLICATION_CREDENTIALS")
+if os.path.exists(key_path):
+    print(f"Google Cloud service account file found at: {key_path}")
+else:
+    raise FileNotFoundError(f"Google Cloud service account file not found at: {key_path}")
+
+
+fichier services\epf_flower_data_science\requirements.txt: 
+gunicorn~=20.1
+uvicorn==0.17.6
+fastapi==0.95.1
+fastapi-utils==0.2.1
+pydantic==1.10
+opendatasets
+pytest
+python-dotenv
+kaggle
+
+fichier services\epf_flower_data_science\iac\README.md: 
+Folder to store terraform files or other files for infra as code tools
+
+
+fichier services\epf_flower_data_science\src\.env: 
+KAGGLE_USERNAME=thomasballini
+KAGGLE_API_KEY=69a86b42b022c682c4b1751f4b2ba5ea
+
+GOOGLE_APPLICATION_CREDENTIALS=../../secret/gcloud_service_account.json
+
+
+fichier services\epf_flower_data_science\src\app.py: 
+from fastapi import FastAPI
+from starlette.middleware.cors import CORSMiddleware
+from src.api.router import router
+from fastapi.responses import RedirectResponse
+
+def get_application() -> FastAPI:
+    application = FastAPI(
+        title="epf-flower-data-science",
+        description="""Fast API""",
+        version="1.0.0",
+        redoc_url=None,
+    )
+
+    application.add_middleware(
+        CORSMiddleware,
+        allow_origins=["*"],
+        allow_credentials=True,
+        allow_methods=["*"],
+        allow_headers=["*"],
+    )
+
+    application.include_router(router)
+
+    @application.get("/", include_in_schema=False)
+    def redirect_to_docs():
+        """Redirect root to the Swagger documentation."""
+        return RedirectResponse(url="/docs")
+
+    return application
+
+
+fichier services\epf_flower_data_science\src\config\model_parameters.json: 
+{
+  "model_type": "LogisticRegression",
+  "parameters": {
+    "penalty": "l2",
+    "C": 1.0,
+    "solver": "lbfgs",
+    "max_iter": 100
+  }
+}
+
+
+fichier services\epf_flower_data_science\src\data\database.sqlite: 
+Erreur de lecture du fichier: 'utf-8' codec can't decode byte 0xe6 in position 98: invalid continuation byte
+
+fichier services\epf_flower_data_science\src\data\Iris.csv: 
+Id,SepalLengthCm,SepalWidthCm,PetalLengthCm,PetalWidthCm,Species
+1,5.1,3.5,1.4,0.2,Iris-setosa
+2,4.9,3.0,1.4,0.2,Iris-setosa
+3,4.7,3.2,1.3,0.2,Iris-setosa
+4,4.6,3.1,1.5,0.2,Iris-setosa
+5,5.0,3.6,1.4,0.2,Iris-setosa
+6,5.4,3.9,1.7,0.4,Iris-setosa
+7,4.6,3.4,1.4,0.3,Iris-setosa
+8,5.0,3.4,1.5,0.2,Iris-setosa
+9,4.4,2.9,1.4,0.2,Iris-setosa
+10,4.9,3.1,1.5,0.1,Iris-setosa
+11,5.4,3.7,1.5,0.2,Iris-setosa
+12,4.8,3.4,1.6,0.2,Iris-setosa
+13,4.8,3.0,1.4,0.1,Iris-setosa
+14,4.3,3.0,1.1,0.1,Iris-setosa
+15,5.8,4.0,1.2,0.2,Iris-setosa
+16,5.7,4.4,1.5,0.4,Iris-setosa
+17,5.4,3.9,1.3,0.4,Iris-setosa
+18,5.1,3.5,1.4,0.3,Iris-setosa
+19,5.7,3.8,1.7,0.3,Iris-setosa
+20,5.1,3.8,1.5,0.3,Iris-setosa
+21,5.4,3.4,1.7,0.2,Iris-setosa
+22,5.1,3.7,1.5,0.4,Iris-setosa
+23,4.6,3.6,1.0,0.2,Iris-setosa
+24,5.1,3.3,1.7,0.5,Iris-setosa
+25,4.8,3.4,1.9,0.2,Iris-setosa
+26,5.0,3.0,1.6,0.2,Iris-setosa
+27,5.0,3.4,1.6,0.4,Iris-setosa
+28,5.2,3.5,1.5,0.2,Iris-setosa
+29,5.2,3.4,1.4,0.2,Iris-setosa
+30,4.7,3.2,1.6,0.2,Iris-setosa
+31,4.8,3.1,1.6,0.2,Iris-setosa
+32,5.4,3.4,1.5,0.4,Iris-setosa
+33,5.2,4.1,1.5,0.1,Iris-setosa
+34,5.5,4.2,1.4,0.2,Iris-setosa
+35,4.9,3.1,1.5,0.1,Iris-setosa
+36,5.0,3.2,1.2,0.2,Iris-setosa
+37,5.5,3.5,1.3,0.2,Iris-setosa
+38,4.9,3.1,1.5,0.1,Iris-setosa
+39,4.4,3.0,1.3,0.2,Iris-setosa
+40,5.1,3.4,1.5,0.2,Iris-setosa
+41,5.0,3.5,1.3,0.3,Iris-setosa
+42,4.5,2.3,1.3,0.3,Iris-setosa
+43,4.4,3.2,1.3,0.2,Iris-setosa
+44,5.0,3.5,1.6,0.6,Iris-setosa
+45,5.1,3.8,1.9,0.4,Iris-setosa
+46,4.8,3.0,1.4,0.3,Iris-setosa
+47,5.1,3.8,1.6,0.2,Iris-setosa
+48,4.6,3.2,1.4,0.2,Iris-setosa
+49,5.3,3.7,1.5,0.2,Iris-setosa
+50,5.0,3.3,1.4,0.2,Iris-setosa
+51,7.0,3.2,4.7,1.4,Iris-versicolor
+52,6.4,3.2,4.5,1.5,Iris-versicolor
+53,6.9,3.1,4.9,1.5,Iris-versicolor
+54,5.5,2.3,4.0,1.3,Iris-versicolor
+55,6.5,2.8,4.6,1.5,Iris-versicolor
+56,5.7,2.8,4.5,1.3,Iris-versicolor
+57,6.3,3.3,4.7,1.6,Iris-versicolor
+58,4.9,2.4,3.3,1.0,Iris-versicolor
+59,6.6,2.9,4.6,1.3,Iris-versicolor
+60,5.2,2.7,3.9,1.4,Iris-versicolor
+61,5.0,2.0,3.5,1.0,Iris-versicolor
+62,5.9,3.0,4.2,1.5,Iris-versicolor
+63,6.0,2.2,4.0,1.0,Iris-versicolor
+64,6.1,2.9,4.7,1.4,Iris-versicolor
+65,5.6,2.9,3.6,1.3,Iris-versicolor
+66,6.7,3.1,4.4,1.4,Iris-versicolor
+67,5.6,3.0,4.5,1.5,Iris-versicolor
+68,5.8,2.7,4.1,1.0,Iris-versicolor
+69,6.2,2.2,4.5,1.5,Iris-versicolor
+70,5.6,2.5,3.9,1.1,Iris-versicolor
+71,5.9,3.2,4.8,1.8,Iris-versicolor
+72,6.1,2.8,4.0,1.3,Iris-versicolor
+73,6.3,2.5,4.9,1.5,Iris-versicolor
+74,6.1,2.8,4.7,1.2,Iris-versicolor
+75,6.4,2.9,4.3,1.3,Iris-versicolor
+76,6.6,3.0,4.4,1.4,Iris-versicolor
+77,6.8,2.8,4.8,1.4,Iris-versicolor
+78,6.7,3.0,5.0,1.7,Iris-versicolor
+79,6.0,2.9,4.5,1.5,Iris-versicolor
+80,5.7,2.6,3.5,1.0,Iris-versicolor
+81,5.5,2.4,3.8,1.1,Iris-versicolor
+82,5.5,2.4,3.7,1.0,Iris-versicolor
+83,5.8,2.7,3.9,1.2,Iris-versicolor
+84,6.0,2.7,5.1,1.6,Iris-versicolor
+85,5.4,3.0,4.5,1.5,Iris-versicolor
+86,6.0,3.4,4.5,1.6,Iris-versicolor
+87,6.7,3.1,4.7,1.5,Iris-versicolor
+88,6.3,2.3,4.4,1.3,Iris-versicolor
+89,5.6,3.0,4.1,1.3,Iris-versicolor
+90,5.5,2.5,4.0,1.3,Iris-versicolor
+91,5.5,2.6,4.4,1.2,Iris-versicolor
+92,6.1,3.0,4.6,1.4,Iris-versicolor
+93,5.8,2.6,4.0,1.2,Iris-versicolor
+94,5.0,2.3,3.3,1.0,Iris-versicolor
+95,5.6,2.7,4.2,1.3,Iris-versicolor
+96,5.7,3.0,4.2,1.2,Iris-versicolor
+97,5.7,2.9,4.2,1.3,Iris-versicolor
+98,6.2,2.9,4.3,1.3,Iris-versicolor
+99,5.1,2.5,3.0,1.1,Iris-versicolor
+100,5.7,2.8,4.1,1.3,Iris-versicolor
+101,6.3,3.3,6.0,2.5,Iris-virginica
+102,5.8,2.7,5.1,1.9,Iris-virginica
+103,7.1,3.0,5.9,2.1,Iris-virginica
+104,6.3,2.9,5.6,1.8,Iris-virginica
+105,6.5,3.0,5.8,2.2,Iris-virginica
+106,7.6,3.0,6.6,2.1,Iris-virginica
+107,4.9,2.5,4.5,1.7,Iris-virginica
+108,7.3,2.9,6.3,1.8,Iris-virginica
+109,6.7,2.5,5.8,1.8,Iris-virginica
+110,7.2,3.6,6.1,2.5,Iris-virginica
+111,6.5,3.2,5.1,2.0,Iris-virginica
+112,6.4,2.7,5.3,1.9,Iris-virginica
+113,6.8,3.0,5.5,2.1,Iris-virginica
+114,5.7,2.5,5.0,2.0,Iris-virginica
+115,5.8,2.8,5.1,2.4,Iris-virginica
+116,6.4,3.2,5.3,2.3,Iris-virginica
+117,6.5,3.0,5.5,1.8,Iris-virginica
+118,7.7,3.8,6.7,2.2,Iris-virginica
+119,7.7,2.6,6.9,2.3,Iris-virginica
+120,6.0,2.2,5.0,1.5,Iris-virginica
+121,6.9,3.2,5.7,2.3,Iris-virginica
+122,5.6,2.8,4.9,2.0,Iris-virginica
+123,7.7,2.8,6.7,2.0,Iris-virginica
+124,6.3,2.7,4.9,1.8,Iris-virginica
+125,6.7,3.3,5.7,2.1,Iris-virginica
+126,7.2,3.2,6.0,1.8,Iris-virginica
+127,6.2,2.8,4.8,1.8,Iris-virginica
+128,6.1,3.0,4.9,1.8,Iris-virginica
+129,6.4,2.8,5.6,2.1,Iris-virginica
+130,7.2,3.0,5.8,1.6,Iris-virginica
+131,7.4,2.8,6.1,1.9,Iris-virginica
+132,7.9,3.8,6.4,2.0,Iris-virginica
+133,6.4,2.8,5.6,2.2,Iris-virginica
+134,6.3,2.8,5.1,1.5,Iris-virginica
+135,6.1,2.6,5.6,1.4,Iris-virginica
+136,7.7,3.0,6.1,2.3,Iris-virginica
+137,6.3,3.4,5.6,2.4,Iris-virginica
+138,6.4,3.1,5.5,1.8,Iris-virginica
+139,6.0,3.0,4.8,1.8,Iris-virginica
+140,6.9,3.1,5.4,2.1,Iris-virginica
+141,6.7,3.1,5.6,2.4,Iris-virginica
+142,6.9,3.1,5.1,2.3,Iris-virginica
+143,5.8,2.7,5.1,1.9,Iris-virginica
+144,6.8,3.2,5.9,2.3,Iris-virginica
+145,6.7,3.3,5.7,2.5,Iris-virginica
+146,6.7,3.0,5.2,2.3,Iris-virginica
+147,6.3,2.5,5.0,1.9,Iris-virginica
+148,6.5,3.0,5.2,2.0,Iris-virginica
+149,6.2,3.4,5.4,2.3,Iris-virginica
+150,5.9,3.0,5.1,1.8,Iris-virginica
+
+
+fichier services\epf_flower_data_science\src\models\LogisticRegression.joblib: 
+Erreur de lecture du fichier: 'utf-8' codec can't decode byte 0x80 in position 0: invalid start byte
+
+fichier services\epf_flower_data_science\src\schemas\camelcase.py: 
+from fastapi_utils.camelcase import snake2camel
+from pydantic import BaseConfig, BaseModel
+from pydantic.generics import GenericModel
+
+
+def snake_2_camel(m: str) -> str:
+    return snake2camel(m, True)
+
+
+class CamelCase(BaseModel):
+    class Config(BaseConfig):
+        allow_population_by_field_name = True
+        alias_generator = snake_2_camel
+
+
+class GenericCamelCase(GenericModel):
+    class Config(BaseConfig):
+        allow_population_by_field_name = True
+        alias_generator = snake_2_camel
+
+
+fichier services\epf_flower_data_science\src\schemas\message.py: 
+from src.schemas.camelcase import CamelCase
+
+
+class MessageResponse(CamelCase):
+    message: str
+
+
+fichier services\epf_flower_data_science\src\schemas\prediction.py: 
+from pydantic import BaseModel
+from typing import List
+
+class PredictionInput(BaseModel):
+    SepalLengthCm: float
+    SepalWidthCm: float
+    PetalLengthCm: float
+    PetalWidthCm: float
+
+
+fichier services\epf_flower_data_science\src\services\cleaning.py: 
+import pandas as pd
+
+def preprocess_iris_dataset(df: pd.DataFrame) -> pd.DataFrame:
+    """
+    Preprocess the Iris dataset for training.
+    Steps:
+    - Remove unnecessary columns.
+    - Handle missing values.
+    - Encode categorical columns.
+    - (Optional) Normalize numeric features.
+    """
+    if "Id" in df.columns:
+        df = df.drop(columns=["Id"])
+    
+    df = df.dropna()
+
+    if "Species" in df.columns:
+        df["Species_Encoded"] = df["Species"].astype("category").cat.codes
+
+    return df
+
+
+from sklearn.model_selection import train_test_split
+import pandas as pd
+
+def split_iris_dataset(df: pd.DataFrame, test_size: float = 0.2, random_state: int = 42):
+    """
+    Split the Iris dataset into train and test sets.
+    
+    Args:
+        df (pd.DataFrame): The processed dataset.
+        test_size (float): Proportion of the dataset to include in the test split.
+        random_state (int): Random seed for reproducibility.
+
+    Returns:
+        train_df (pd.DataFrame): Training set.
+        test_df (pd.DataFrame): Test set.
+    """
+    train_df, test_df = train_test_split(df, test_size=test_size, random_state=random_state)
+    return train_df, test_df
+
+
+fichier services\epf_flower_data_science\src\services\data.py: 
+import json
+import os
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import accuracy_score
+import joblib
+import pandas as pd
+
+def train_classification_model(train_df, model_config_path, model_save_path):
+    """
+    Train a classification model using the train dataset.
+    
+    Args:
+        train_df (pd.DataFrame): Processed training dataset.
+        model_config_path (str): Path to the model configuration file.
+        model_save_path (str): Path to save the trained model.
+
+    Returns:
+        dict: Training accuracy and model details.
+    """
+    with open(model_config_path, "r") as f:
+        config = json.load(f)
+
+    model_type = config["model_type"]
+    parameters = config["parameters"]
+
+    X_train = train_df.drop(columns=["Species", "Species_Encoded"])
+    y_train = train_df["Species_Encoded"]
+
+    if model_type == "LogisticRegression":
+        model = LogisticRegression(**parameters)
+    else:
+        raise ValueError(f"Unsupported model type: {model_type}")
+
+    model.fit(X_train, y_train)
+
+    y_pred = model.predict(X_train)
+    accuracy = accuracy_score(y_train, y_pred)
+
+    os.makedirs(model_save_path, exist_ok=True)
+    joblib.dump(model, os.path.join(model_save_path, f"{model_type}.joblib"))
+
+    return {
+        "model_type": model_type,
+        "parameters": parameters,
+        "training_accuracy": accuracy
+    }
+
+
+def predict_with_model(input_data: list, model_path: str) -> list:
+    """
+    Make predictions using the trained classification model.
+    
+    Args:
+        input_data (list): A list of dictionaries representing the input features.
+        model_path (str): Path to the saved model.
+
+    Returns:
+        list: Predictions made by the model.
+    """
+    if not os.path.exists(model_path):
+        raise FileNotFoundError(f"Model not found at {model_path}. Train the model first.")
+    
+    model = joblib.load(model_path)
+
+    input_df = pd.DataFrame(input_data)
+
+    required_columns = model.feature_names_in_ 
+    missing_columns = set(required_columns) - set(input_df.columns)
+    if missing_columns:
+        raise ValueError(f"Missing required columns: {missing_columns}")
+
+    predictions = model.predict(input_df)
+
+    return predictions.tolist()
+
+
+fichier services\epf_flower_data_science\src\services\env.py: 
+import os
+from dotenv import load_dotenv
+
+def load_environment():
+    # Charger les variables d'environnement depuis .env
+    dotenv_path = os.path.join(os.path.dirname(__file__), '..', '.env')
+    load_dotenv(dotenv_path=dotenv_path)
+
+    # Résoudre le chemin absolu pour GOOGLE_APPLICATION_CREDENTIALS
+    relative_path = os.getenv("GOOGLE_APPLICATION_CREDENTIALS")
+    if relative_path:
+        # Construire le chemin absolu
+        absolute_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', relative_path))
+        os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = absolute_path
+
+        # Debugging : Afficher le chemin relatif et absolu
+        print(f"Relative path: {relative_path}")
+        print(f"Resolved absolute path: {absolute_path}")
+
+
+fichier services\epf_flower_data_science\src\services\firestore.py: 
+from google.cloud import firestore
+
+def create_firestore_collection():
+    """
+    Create a Firestore collection 'parameters' with a document named 'parameters'
+    containing default parameter values.
+    """
+    # Initialiser le client Firestore
+    db = firestore.Client()
+
+    # Collection et document
+    collection_name = "parameters"
+    document_name = "parameters"
+
+    # Données par défaut
+    data = {
+        "n_estimators": 100,
+        "criterion": "gini"
+    }
+
+    try:
+        # Ajouter ou mettre à jour le document
+        db.collection(collection_name).document(document_name).set(data)
+        print(f"Collection '{collection_name}' and document '{document_name}' created successfully!")
+    except Exception as e:
+        print(f"Failed to create Firestore collection: {e}")
+        raise
+
+
+fichier services\epf_flower_data_science\src\services\parameters.py: 
+
+
+fichier services\epf_flower_data_science\src\services\utils.py: 
+
+
