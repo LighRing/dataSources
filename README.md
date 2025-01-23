@@ -4,7 +4,7 @@
 
   - Django
 
-  - Flask
+  - **Flask**
 
   - FastAPI
 
@@ -16,7 +16,7 @@
 
   - Flask outperforms Django and FastAPI.
 
-  - FastAPI is renowned for its increased speed and performance compared with Django and Flask.
+  - **FastAPI is renowned for its increased speed and performance compared with Django and Flask.**
 
   - Django, Flask and FastAPI have equivalent performance.
 
@@ -26,13 +26,13 @@
 
   - A breakpoint in the code where the API can be interrupted.
 
-  - A specific URL to which a request can be sent to interact with the API.
+  - **A specific URL to which a request can be sent to interact with the API.**
 
   - A unique identifier assigned to each incoming request.
 
 - **Question 4:** _What are the main HTTP verbs used to define REST API methods?_
 
-  - GET, POST, PUT, PATCH, DELETE
+  - **GET, POST, PUT, PATCH, DELETE**
 
   - SEND, RECEIVE, UPDATE, REMOVE
 
@@ -46,7 +46,7 @@
 
   - An external library used to speed up API development.
 
-  - Intermediate software that processes the request before it reaches the main application.
+  - **Intermediate software that processes the request before it reaches the main application.**
 
   - A method for securing data stored in the database.
 
@@ -56,7 +56,7 @@
 
   - PyJSON
 
-  - json.dumps() and json.loads()
+  - **json.dumps() and json.loads()**
 
   - serializeJSON
 
@@ -64,7 +64,7 @@
 
   - Create a new resource.
 
-  - Update an existing resource, or create one if it doesn't exist.
+  - **Update an existing resource, or create one if it doesn't exist.**
 
   - Delete a resource.
 
@@ -72,7 +72,7 @@
 
 - **Question 8:** In FastAPI, how do you define an endpoint to handle a POST request with JSON data?\*
 
-  - @app.post("/endpoint")
+  - **@app.post("/endpoint")**
 
   - @app.get("/endpoint")
 
@@ -133,7 +133,7 @@ About the API workflow:
 
 - **Step 5: First call to the API:**  Make an API request on the hello route using the swagger directly or a tool like insomnia or postman
 
-- **Step 6: Access the dataset:**  Create a route in api/routes/data to download and save the contents of the following kaggle dataset in the src/data folder: https://www.kaggle.com/datasets/uciml/iris. 
+- **Step 6: Access the dataset:**  Create a route in api/routes/data to download and save the contents of the following kaggle dataset in the src/data folder: https://www.kaggle.com/datasets/uciml/iris. If you're having too many problems, simply download the dataset from the kaggle website. documentation : https://www.geeksforgeeks.org/how-to-download-kaggle-datasets-into-jupyter-notebook/
 
 - **Step 7: Loading the Iris Flower dataset:** Add an endpoint to load the iris dataset file as a dataframe and return it as a json.
 
